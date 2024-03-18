@@ -5,20 +5,19 @@ import 'package:flutter/material.dart';
 
 class NewsProviderTribune with ChangeNotifier {
   List<ModelStory> _stories = [];
-  String _category = "";
+  String _category = "home";
   
   List<ModelStory> get stories => _stories;
   String get category => _category;
   
 
   getNews() async {
-    _stories = (await TribuneApiService().getNewsTribune(_category));
+    _stories = (await TribuneApiService().getNewsTribune(_category.toLowerCase()));
     notifyListeners() ;
   }
 
   setCurrentCategory(int index) async {
     _category = categoriesTribune[index];
-    
     notifyListeners();
   }
 

@@ -9,22 +9,22 @@ class NewsChannelProvider with ChangeNotifier {
   String _currentChannel = "default";
   String get currentChannel => _currentChannel;
   
-
+  // Return the provider of the active channel
   activeChannel(BuildContext context){
     print('currentChannel activeChannel: $currentChannel');
       if (currentChannel == newsChannels[0]) {
-        // Do something if currentChannel is not null
         return context.read<NewsProviderProPakistani>();
         
       } else if (currentChannel == newsChannels[1]){
-        // Do something if currentChannel is not null
         return context.read<NewsProviderDawn>();
+
       } else if (currentChannel == newsChannels[2]){
-        // Do something if currentChannel is not null
+        print('currentChannel activeChannel: $currentChannel');
         return context.read<NewsProviderTribune>();
+
       } else if (currentChannel == "default"){
-        // Do something if currentChannel is not null
         return context.read<NewsProviderProPakistani>();
+
       }else {
       throw Exception('Unknown channel: $currentChannel');
       }

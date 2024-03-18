@@ -11,6 +11,7 @@ class TribuneApiService {
       var response = await Dio().get("$baseURL$categoriesTribune");
 
       if (response.statusCode == 200) {
+        try {
         var document = XmlDocument.parse(response.toString());
 
         var numberOfStories = document.findAllElements("title").length - 1;
@@ -44,7 +45,8 @@ class TribuneApiService {
 
           var description =
               document.findAllElements("description").elementAt(i).innerText;
-          description = description.trimLeft().trimRight();
+              description = description.trimLeft().trimRight();
+              
           var imageURL = document
               .findAllElements("img")
               .elementAt(i - 1)
@@ -58,6 +60,9 @@ class TribuneApiService {
               imageURL: imageURL,
               description: description,
               ));
+        }
+        } on XmlTagException catch (e){
+          print(e);
         }
       }
     } catch (e) {

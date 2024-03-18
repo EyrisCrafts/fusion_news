@@ -1,5 +1,4 @@
 import 'package:fusion_news/providers/provider_news_channel.dart';
-import 'package:fusion_news/providers/provider_news_propakistani.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

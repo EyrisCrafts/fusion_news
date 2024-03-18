@@ -6,7 +6,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import 'button_settings.dart';
 import 'card_stories.dart';
 
@@ -28,18 +27,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    
   }
 
   @override
   Widget build(BuildContext context) {
-    var currentChannel = Provider.of<NewsChannelProvider>(context).currentChannel;
+    var newsProvider = Provider.of<NewsChannelProvider>(context);
 
-    var newsProvider = Provider.of<NewsChannelProvider>(context).activeChannel(context);
+    var currentChannel = newsProvider.currentChannel;
     
     List<String> categories;
 
-    if (currentChannel == "propakistani") {
+    if (currentChannel == "ProPakistani") {
       categories = categoriesProPakistani;
     } else if (currentChannel == "Dawn") {
       categories = categoriesDawn;
@@ -65,9 +63,10 @@ class _MyHomePageState extends State<MyHomePage> {
             context: context,
             removeTop: true,
             child: ListView.builder(
-              
+
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
+
               itemCount: newsChannels.length,
 
               itemBuilder:(context, index) {
@@ -78,13 +77,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         fontSize: MediaQuery.of(context).size.width * 0.05),
                   ),
                   onTap: () {
-                    print("newsChannels[index] ${newsChannels[index]}");
-                    Provider.of<NewsChannelProvider>(context, listen: false).switchChannel(newsChannels[index]);
+                    newsProvider.activeChannel(context).getNews();
+                    if (mounted) {
+                      setState(() {
+                        newsProvider.switchChannel(newsChannels[index]);
+                        newsProvider.activeChannel(context).setCurrentCategory(0);
+                        Navigator.pop(context);
+                      });
+                      
+                    }
                   },
                 );
-
-                
-              
               }
             ),
           ),
@@ -129,10 +132,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         fontSize: MediaQuery.of(context).size.width * 0.04),
                   ),
                   onTap: (){
-                    newsProvider.setCurrentCategory(i);
+                    newsProvider.activeChannel(context).setCurrentCategory(i);
                     if (mounted) {
                       setState(() {
-                        newsProvider.getNews();
+                        newsProvider.activeChannel(context).getNews();
                         Navigator.pop(context);
                         categoryIndex = i;
                         void scrollToTopInstantly(ScrollController controller) {
@@ -170,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       body: FutureBuilder(
-        future: Provider.of<NewsChannelProvider>(context).activeChannel(context).getNews(),
+        future: newsProvider.activeChannel(context).getNews(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -199,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     parent: AlwaysScrollableScrollPhysics()),
                 controller: _controller,
                 shrinkWrap: true,
-                itemCount: newsProvider.getStories().length,
+                itemCount: newsProvider.activeChannel(context).getStories().length,
         
                 //Gap between the cards
                 separatorBuilder: (context, index) => const SizedBox(

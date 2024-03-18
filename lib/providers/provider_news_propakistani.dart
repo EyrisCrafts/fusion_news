@@ -18,7 +18,6 @@ class NewsProviderProPakistani with ChangeNotifier {
 
   setCurrentCategory(int index) async {
     _category = linkCategoriesProPakistani[index];
-    
     notifyListeners();
   }
 

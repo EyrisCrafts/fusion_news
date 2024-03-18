@@ -19,23 +19,4 @@ class Global{
     blurRadius: 5,
     offset: const Offset(0, 0), // changes the position of the shadow
   );
-
-  
-  // activeChannel(BuildContext context){
-  //   var currentChannel = Provider.of<NewsChannelProvider>(context, listen: false).currentChannel;
-
-  //     if (currentChannel == newsChannels[0]) {
-  //       // Do something if currentChannel is not null
-  //       return context.watch<NewsProviderProPakistani>();
-  //     } else if (currentChannel == newsChannels[1]){
-  //       // Do something if currentChannel is not null
-  //       return context.watch<NewsProviderDawn>();
-  //     } else if (currentChannel == newsChannels[3]){
-  //       // Do something if currentChannel is not null
-  //       return context.watch<NewsProviderTribune>();
-  //     } else {
-  //     throw Exception('Unknown channel: $currentChannel');
-  //     }
-    
-  // }
 }

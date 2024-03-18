@@ -1,5 +1,3 @@
-
-//https://www.dawn.com/feeds/
 import 'package:fusion_news/models/model_story.dart';
 import 'package:dio/dio.dart';
 import 'package:xml/xml.dart';
@@ -9,7 +7,7 @@ abstract class IApiManager{
   Future<List<ModelStory>> getNewsDawn(String categoriesDawn);
 }
 
-class DawnApiManager implements IApiManager{
+class DawnApiService implements IApiManager{
   
   final String baseURL = "https://www.dawn.com/feeds/";
 

@@ -1,4 +1,3 @@
-
 import 'package:flutter/widgets.dart';
 import 'package:fusion_news/api_manager/api_manager_dawn.dart';
 import 'package:fusion_news/models/model_story.dart';
@@ -13,7 +12,7 @@ class NewsProviderDawn with ChangeNotifier {
   
 
   getNews() async {
-    _stories = (await DawnApiManager().getNewsDawn(_category.toLowerCase()));
+    _stories = (await DawnApiService().getNewsDawn(_category.toLowerCase()));
     notifyListeners();
   }
 

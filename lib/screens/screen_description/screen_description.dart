@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:fusion_news/providers/provider_news_propakistani.dart';
+import 'package:fusion_news/providers/provider_news_channel.dart';
 import 'package:fusion_news/providers/provider_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -26,11 +26,13 @@ class _ScreenDescriptionState extends State<ScreenDescription> {
   double contentFontSize = 16.0;
   bool isDrawerOpen = false;
   bool isDialVisible = true;
+  late Future newsFuture;
 
   @override
   void initState() {
     super.initState();
-    context.read<NewsProviderProPakistani>().getNews();
+    
+    newsFuture = Provider.of<NewsChannelProvider>(context, listen: false).activeChannel(context).getNews();
     context.read<SharedPreferencesProvider>()
       .getFontSize()
       .then((value) => setState(() {
@@ -46,7 +48,7 @@ class _ScreenDescriptionState extends State<ScreenDescription> {
   
   @override
   Widget build(BuildContext context) {
-    var newsProvider = context.read<NewsProviderProPakistani>();
+    var newsProvider = Provider.of<NewsChannelProvider>(context).activeChannel(context);
     int index = widget.index;
     
 
@@ -251,50 +253,60 @@ class _ScreenDescriptionState extends State<ScreenDescription> {
               children: [
                       
                 //ImageStory
-                Stack(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      margin: const EdgeInsets.only(bottom: 10),
-                      child: Image(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            newsProvider.getStoryImageURL(index),
-                          )),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      margin: const EdgeInsets.only(bottom: 10),
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                        colors: [Colors.black.withOpacity(0.9), Colors.transparent],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      )),
-                    ),
-                    Positioned(
-                      bottom: 50,
-                      child: Container(
+                FutureBuilder(
+                  future: newsFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return    
+                  Stack(
+                    children: [
+                      Container(
                         width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Text(newsProvider.getStoryTitle(index),
-                            textAlign: TextAlign.justify,
-                            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                color: Colors.white, fontWeight: FontWeight.bold)),
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: Image(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              newsProvider.getStoryImageURL(index),
+                            )),
                       ),
-                    ),
-                    Positioned(
-                        bottom: 20,
-                        right: 0,
-                        child: Text(newsProvider.getStoryDate(index),
-                            style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal))),
-                    
-                  ],
-                ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        margin: const EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                          colors: [Colors.black.withOpacity(0.9), Colors.transparent],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                        )),
+                      ),
+                      Positioned(
+                        bottom: 50,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Text(newsProvider.getStoryTitle(index),
+                              textAlign: TextAlign.justify,
+                              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                  color: Colors.white, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      Positioned(
+                          bottom: 20,
+                          right: 0,
+                          child: Text(newsProvider.getStoryDate(index),
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal))),
+                      
+                    ],
+                  );
+  }}),
 
                 SizedBox(
                   height: MediaQuery.sizeOf(context).height * 0.02,
