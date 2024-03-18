@@ -70,7 +70,27 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: newsChannels.length,
 
               itemBuilder:(context, index) {
-                return ListTile(
+                if (index == 0) {
+                  return const SizedBox(height: 80,
+                    child: DrawerHeader(
+                      
+                      decoration: BoxDecoration(
+                        color: Global.kColorPrimary,
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Channels",
+                          style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  index -= 1;
+                  return ListTile(
                   title: Text(
                     newsChannels[index],
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -88,6 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     }
                   },
                 );
+                }
+                
               }
             ),
           ),
@@ -112,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 child: Center(
                   child: Text(
-                    "ProPakistani",
+                    newsProvider.currentChannel,
                     style: GoogleFonts.playfair(
                         fontSize: MediaQuery.of(context).size.width * 0.12,
                         fontWeight: FontWeight.w700,
@@ -159,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "ProPakistani",
+          newsProvider.currentChannel,
           style: GoogleFonts.playfair(
               fontSize: MediaQuery.of(context).size.width * 0.08,
               fontWeight: FontWeight.w700,

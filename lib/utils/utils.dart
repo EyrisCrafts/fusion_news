@@ -30,6 +30,7 @@ final List<String> newsChannels = [
   'ProPakistani',
   'Dawn',
   'Tribune',
+  '',//Needed because the channel List omits the last value
 ];
 
 
