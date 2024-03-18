@@ -1,7 +1,5 @@
-import 'package:flutter/widgets.dart';
 import 'package:fusion_news/globals/globals.dart';
 import 'package:fusion_news/providers/provider_news_channel.dart';
-import 'package:fusion_news/providers/provider_news_propakistani.dart';
 import 'package:fusion_news/screens/screen_description/screen_description.dart';
 import 'package:fusion_news/utils/utils.dart';
 import 'package:flutter/gestures.dart';
@@ -32,14 +30,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     
   }
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    Provider.of<NewsChannelProvider>(context, listen: false).activeChannel(context).getNews();
-  }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -179,68 +169,77 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
 
-      body: Column(
-        children: [
-          //Category
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(
-                categories[categoryIndex],
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width * 0.05,
+      body: FutureBuilder(
+        future: Provider.of<NewsChannelProvider>(context).activeChannel(context).getNews(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return  Column(
+          children: [
+            //Category
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  categories[categoryIndex],
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.05,
+                  ),
                 ),
               ),
             ),
-          ),
-
-          //Store the list of stories in a ListView
-          Expanded(
-            child: ListView.separated(
-              physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics()),
-              controller: _controller,
-              shrinkWrap: true,
-              itemCount: newsProvider.getStories().length,
-
-              //Gap between the cards
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 5,
-              ),
-
-              itemBuilder: (context, index) {
-                return GestureDetector(
-
-                    //Ontap to navigate to the description screen
-                    onTap: () => {
-                          (Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder: (context, animation,
-                                        secondaryAnimation) =>
-                                    ScreenDescription(index: index,),
-                                transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) =>
-                                    SlideTransition(
-                                  position: animation.drive(
-                                    Tween(
-                                            begin: const Offset(1.0, 0.0),
-                                            end: Offset.zero)
-                                        .chain(CurveTween(
-                                            curve: Curves.decelerate)),
+        
+            //Store the list of stories in a ListView
+            Expanded(
+              child: ListView.separated(
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
+                controller: _controller,
+                shrinkWrap: true,
+                itemCount: newsProvider.getStories().length,
+        
+                //Gap between the cards
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 5,
+                ),
+        
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+        
+                      //Ontap to navigate to the description screen
+                      onTap: () => {
+                            (Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      ScreenDescription(index: index,),
+                                  transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) =>
+                                      SlideTransition(
+                                    position: animation.drive(
+                                      Tween(
+                                              begin: const Offset(1.0, 0.0),
+                                              end: Offset.zero)
+                                          .chain(CurveTween(
+                                              curve: Curves.decelerate)),
+                                    ),
+                                    child: child,
                                   ),
-                                  child: child,
-                                ),
-                              )))
-                        },
-
-                    //Card
-                    child: CardStories(index: index,));
-              },
+                                )))
+                          },
+        
+                      //Card
+                      child: CardStories(index: index,));
+                },
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+  }})
     );
   }
 }

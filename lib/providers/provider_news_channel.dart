@@ -35,5 +35,4 @@ class NewsChannelProvider with ChangeNotifier {
     _currentChannel = currentChannel;
     notifyListeners();
   }
-
 }

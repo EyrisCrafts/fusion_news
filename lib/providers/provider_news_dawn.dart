@@ -14,13 +14,11 @@ class NewsProviderDawn with ChangeNotifier {
 
   getNews() async {
     _stories = (await DawnApiManager().getNewsDawn(_category.toLowerCase()));
-    print("Dawn Category: $_category");
     notifyListeners();
   }
 
   setCurrentCategory(int index) async {
     _category = categoriesDawn[index];
-    
     notifyListeners();
   }
 

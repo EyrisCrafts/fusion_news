@@ -54,12 +54,12 @@ final List<String> categoriesTribune = [
 final List<String> categoriesDawn = [
   'Home',
   'Latest-News',
-  'Pakistan',
-  'Opinion',
+  'Tech',
   'Business',
+  'Opinion',
   'World',
+  'Pakistan',
   'Sport',
   'Magazines',
   'Blogs',
-  'Entertainment'
 ];
