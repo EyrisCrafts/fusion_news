@@ -11,7 +11,6 @@ class NewsChannelProvider with ChangeNotifier {
   
   // Return the provider of the active channel
   activeChannel(BuildContext context){
-    print('currentChannel activeChannel: $currentChannel');
       if (currentChannel == newsChannels[0]) {
         return context.read<NewsProviderProPakistani>();
         
@@ -19,7 +18,6 @@ class NewsChannelProvider with ChangeNotifier {
         return context.read<NewsProviderDawn>();
 
       } else if (currentChannel == newsChannels[2]){
-        print('currentChannel activeChannel: $currentChannel');
         return context.read<NewsProviderTribune>();
 
       } else if (currentChannel == "default"){
@@ -31,7 +29,6 @@ class NewsChannelProvider with ChangeNotifier {
   }
 
   switchChannel(String currentChannel) {
-    print('currentChannel switchChannel: $currentChannel');
     _currentChannel = currentChannel;
     notifyListeners();
   }

@@ -62,9 +62,8 @@ class DawnApiService implements IApiManager{
         ); 
       }
     } catch (e) {
-    
-      print(e);
-    
+
+      throw Exception(e.toString());
     }
     return toReturn;
   }

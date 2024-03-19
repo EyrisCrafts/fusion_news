@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomScrollPhysics extends ScrollPhysics {
-  const CustomScrollPhysics({ScrollPhysics? parent}) : super(parent: parent);
+  const CustomScrollPhysics({super.parent});
 
   @override
   CustomScrollPhysics applyTo(ScrollPhysics? ancestor) {

@@ -60,11 +60,11 @@ class ProPakistaniApiService {
           }
         } on XmlTagException catch (e){
           // handle exception using logging framework
-          print(e);
+          throw Exception(e.toString());
         }
       }
     } catch (e) {
-      print(e);
+      throw Exception(e.toString());
     }
     return toReturn;
   }

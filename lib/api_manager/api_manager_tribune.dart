@@ -62,7 +62,7 @@ class TribuneApiService {
               ));
         }
         } on XmlTagException catch (e){
-          print(e);
+          throw Exception(e.toString());
         }
       }
     } catch (e) {

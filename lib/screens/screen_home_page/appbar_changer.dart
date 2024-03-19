@@ -5,7 +5,6 @@ import 'package:fusion_news/providers/provider_news_channel.dart';
 import 'package:fusion_news/screens/screen_settings/screen_settings.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class AppBarChanger extends StatefulWidget implements PreferredSizeWidget {
   
   final NewsChannelProvider newsProvider;

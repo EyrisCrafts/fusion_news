@@ -1,6 +1,6 @@
+// ignore: file_names
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-
 import 'package:fusion_news/globals/globals.dart';
 import 'package:fusion_news/providers/provider_news_channel.dart';
 import 'package:google_fonts/google_fonts.dart';
