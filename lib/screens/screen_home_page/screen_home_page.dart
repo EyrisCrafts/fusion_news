@@ -1,12 +1,12 @@
 import 'package:fusion_news/globals/globals.dart';
 import 'package:fusion_news/providers/provider_news_channel.dart';
 import 'package:fusion_news/screens/screen_description/screen_description.dart';
+import 'package:fusion_news/screens/screen_home_page/appbar_changer.dart';
+import 'package:fusion_news/screens/screen_home_page/drawer_header_changer.dart';
 import 'package:fusion_news/utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'button_settings.dart';
 import 'card_stories.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -17,6 +17,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  
   // Category Variable to store the category name
   int categoryIndex = 0;
 
@@ -117,82 +118,56 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       //Drawer
-      drawer: Drawer(
-        width: MediaQuery.of(context).size.width * drawerWidthFactor,
-        //ListView to create a list of Categories
-        child: MediaQuery.removePadding(
-          context: context,
-          removeTop: true,
-          child: ListView(
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
-            children: [
-              DrawerHeader(
-                
-                decoration: const BoxDecoration(
-                  color: Global.kColorPrimary,
-                ),
-                child: Center(
-                  child: Text(
-                    newsProvider.currentChannel,
-                    style: GoogleFonts.playfair(
-                        fontSize: MediaQuery.of(context).size.width * 0.12,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white),
-                  ),
-                ),
-              ),
-                
-              //Looping over the Category List to create a list of Categories
-              
+      drawer: SizedBox(
+        height: MediaQuery.of(context).size.width * 1.8,
+        child: Drawer(
+          width: MediaQuery.of(context).size.width * drawerWidthFactor,
+          //ListView to create a list of Categories
+          child: MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: ListView(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              children: [
 
-              for (int i = 0; i < categories.length; i++)
-                ListTile(
-                  title: Text(
-                    categories[i],
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: MediaQuery.of(context).size.width * 0.04),
+                DrawerHeaderChanger(newsProvider: newsProvider),
+
+                //Looping over the Category List to create a list of Categories
+                for (int i = 0; i < categories.length; i++)
+                  ListTile(
+                    title: Text(
+                      categories[i],
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontSize: MediaQuery.of(context).size.width * 0.04),
+                    ),
+                    onTap: (){
+                      newsProvider.activeChannel(context).setCurrentCategory(i);
+                      if (mounted) {
+                        setState(() {
+                          newsProvider.activeChannel(context).getNews();
+                          Navigator.pop(context);
+                          categoryIndex = i;
+                          void scrollToTopInstantly(ScrollController controller) {
+                            controller.animateTo(
+                              0,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                          scrollToTopInstantly(_controller);
+                        });
+                      }
+                    },
                   ),
-                  onTap: (){
-                    newsProvider.activeChannel(context).setCurrentCategory(i);
-                    if (mounted) {
-                      setState(() {
-                        newsProvider.activeChannel(context).getNews();
-                        Navigator.pop(context);
-                        categoryIndex = i;
-                        void scrollToTopInstantly(ScrollController controller) {
-                          controller.animateTo(
-                            0,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        }
-                        scrollToTopInstantly(_controller);
-                      });
-                    }
-                  },
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
 
       //AppBar
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          newsProvider.currentChannel,
-          style: GoogleFonts.playfair(
-              fontSize: MediaQuery.of(context).size.width * 0.08,
-              fontWeight: FontWeight.w700,
-              color: Colors.white),
-        ),
-
-        //Settings Button
-        actions: const [
-          ButtonSettings(),
-        ],
-      ),
+      appBar: AppBarChanger(newsProvider: newsProvider),
 
       body: FutureBuilder(
         future: newsProvider.activeChannel(context).getNews(),

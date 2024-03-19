@@ -79,12 +79,12 @@ class MyApp extends StatelessWidget {
       dark: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
-        appBarTheme: const AppBarTheme(backgroundColor: Global.kColorPrimary),
-        drawerTheme: const DrawerThemeData(backgroundColor: Global.kColorSecondary),
-        scaffoldBackgroundColor: Global.kColorSecondary,
-        dialogBackgroundColor: Global.kColorSecondary,
+        appBarTheme: const AppBarTheme(backgroundColor: Global.colorProPakistani),
+        drawerTheme: const DrawerThemeData(backgroundColor: Global.colorDarkMode),
+        scaffoldBackgroundColor: Global.colorDarkMode,
+        dialogBackgroundColor: Global.colorDarkMode,
         switchTheme: SwitchThemeData(
-          thumbColor: MaterialStateProperty.all(Global.kColorSecondary),
+          thumbColor: MaterialStateProperty.all(Global.colorDarkMode),
           trackColor: MaterialStateProperty.all(Colors.blueGrey.shade50),
         ),
       ),

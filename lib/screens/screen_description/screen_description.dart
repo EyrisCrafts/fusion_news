@@ -27,6 +27,7 @@ class _ScreenDescriptionState extends State<ScreenDescription> {
   bool isDrawerOpen = false;
   bool isDialVisible = true;
   late Future newsFuture;
+  ScrollPhysics _physics = const ClampingScrollPhysics();
 
   @override
   void initState() {
@@ -42,6 +43,11 @@ class _ScreenDescriptionState extends State<ScreenDescription> {
       setState(() {
         isDialVisible = _scrollController.position.userScrollDirection == ScrollDirection.forward;
       });
+      if (_scrollController.position.pixels <= 56) {
+        setState(() => _physics = const ClampingScrollPhysics());
+      } else {
+        setState(() => _physics = const BouncingScrollPhysics());
+      }
     });
   }
 
@@ -53,6 +59,8 @@ class _ScreenDescriptionState extends State<ScreenDescription> {
     
 
     return Scaffold(
+
+
       floatingActionButton:
         BackdropFilter(
           filter:  isDrawerOpen ? ImageFilter.blur(sigmaX: 5, sigmaY: 5) : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
@@ -233,20 +241,14 @@ class _ScreenDescriptionState extends State<ScreenDescription> {
                 ]),
         ),
 
-      
-
       body: Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: CustomScrollView(
           controller: _scrollController,
-          physics: const BouncingScrollPhysics(),
+          physics: _physics,
           
           slivers: [
             //To hide the appbar when scrolling
-            const SliverAppBar(
-              floating: true,
-              snap: true,
-            ),
             
             SliverToBoxAdapter(
               child: Column(
