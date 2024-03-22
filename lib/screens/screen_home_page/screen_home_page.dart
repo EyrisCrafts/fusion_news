@@ -186,6 +186,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           //AppBar
           appBar: AppBarChanger(newsProvider: newsProvider),
           bottomNavigationBar: TabBar(
+            tabAlignment: TabAlignment.start,
             onTap: (value) {
               newsProvider.activeChannel(context).setCurrentCategory(value);
               print("Category Index: $value");
