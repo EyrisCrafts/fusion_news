@@ -22,4 +22,6 @@ class Global{
     blurRadius: 5,
     offset: const Offset(0, 0), // changes the position of the shadow
   );
+
+  
 }
